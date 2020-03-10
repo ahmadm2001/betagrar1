@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1059261346359",
+    "firebase_url": "https://betagrar.firebaseio.com",
+    "project_id": "betagrar",
+    "storage_bucket": "betagrar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059261346359:android:dd71e6a5362900eb9c45b2",
+        "android_client_info": {
+          "package_name": "com.example.betagrar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059261346359-7hp4hu8a5s6jcpjve7ha3cc3m5rbckpd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.betagrar",
+            "certificate_hash": "163858117bcb3e7bead911a92a7a5f9d03cd745a"
+          }
+        },
+        {
+          "client_id": "1059261346359-nk2nn2jv25518p3d9j57jsums2398bbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2oBenZTKLjIBOscdxTKf99-nL-8B_JjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059261346359-nk2nn2jv25518p3d9j57jsums2398bbq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
