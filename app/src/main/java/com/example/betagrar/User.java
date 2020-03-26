@@ -2,15 +2,15 @@ package com.example.betagrar;
 
 public class User {
 
-        private String name, email, phone, uid;
+    private String name, email, phone, uid;
 
-        public User(String name, String phone, String uid){}
-        public User (String name, String email, String phone, String uid) {
-            this.name=name;
-            this.email=email;
-            this.phone=phone;
-            this.uid=uid;
-        }
+    public User(String s, String email, String name, String phone, String uid){}
+    public User (String name, String email, String phone, String uid) {
+        this.name=name;
+        this.email=email;
+        this.phone=phone;
+        this.uid=uid;
+    }
 
 
     public String getName() {
@@ -20,27 +20,26 @@ public class User {
     public void setName(String name) {
         this.name=name;
     }
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email=email;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public void setPhone(String phone) {
-            this.phone=phone;
-        }
-        public String getUid() {
-            return uid;
-        }
-
-        public void setUid(String uid) {
-            this.uid=uid;
-        }
+    public String getEmail() {
+        return email;
     }
 
+    public void setEmail(String email) {
+        this.email=email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone=phone;
+    }
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid=uid;
+    }
+}

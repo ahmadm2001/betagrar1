@@ -47,10 +47,11 @@ public class Loginactivte extends AppCompatActivity {
     EditText eTname, eTphone, eTemail, eTcode;
     CheckBox cBstayconnect;
     Button btn, btnVerify;
+    customer cu;
     Switch Switch;
 
     private String mVerificationId;
-    String name, phone, email, uid;
+    String name, phone, email, uid,CN;
     User userdb;
     Boolean stayConnect, registered, firstrun, Customer;
     Boolean mVerificationInProgress = false;
@@ -81,7 +82,6 @@ public class Loginactivte extends AppCompatActivity {
         tVmanager = findViewById(R.id.textView3);
         btn = findViewById(R.id.btn);
         btnVerify = findViewById(R.id.button2);
-
         stayConnect = false;
         registered = true;
 
@@ -122,7 +122,7 @@ public class Loginactivte extends AppCompatActivity {
                     //etCode.setError("Invalid phone number.");
                 }
                 else
-                    if (e instanceof FirebaseTooManyRequestsException) {
+                if (e instanceof FirebaseTooManyRequestsException) {
                 }
             }
 
@@ -297,18 +297,21 @@ public class Loginactivte extends AppCompatActivity {
                         if (Switch.isChecked()) {
                             Customer = true;
                         }
-                        else Customer = false;
-                        userdb = new User(name, email, phone, uid);
-                        if
-                            (Customer){ refUsers.child("customer").child(name).setValue(userdb);
+                        else
+                            Customer = false;
+                            userdb = new User(name, email, phone, uid);
+
+                        if (Customer) {
+                            refUsers.child("customer").child(phone).setValue(userdb);
                             Toast.makeText(Loginactivte.this, "Successful registration", Toast.LENGTH_LONG).show();
                             Intent si = new Intent(Loginactivte.this, CustomerActivite.class);
                             startActivity(si);
                         }
+
                         else {
-                            refUsers.child("Managers").child(name).setValue(userdb);
+                            refUsers.child("Managers").child(phone).setValue(userdb);
                             Toast.makeText(Loginactivte.this, "Successful registration", Toast.LENGTH_LONG).show();
-                            Intent si = new Intent(Loginactivte.this, CustomerActivite.class);
+                            Intent si = new Intent(Loginactivte.this, ManagerActivite.class);
                             startActivity(si);
                         }
 

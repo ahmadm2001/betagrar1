@@ -1,9 +1,9 @@
 package com.example.betagrar;
 
 public class order {
-    private String orderLocaion, time, date;
-    private customer customer;
-    private offerdrag offerdrag;
+    public String orderLocaion, time, date;
+    public customer customer;
+    public offerdrag offerdrag;
 
     public order() {
     }

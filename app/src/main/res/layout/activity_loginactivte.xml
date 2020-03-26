@@ -37,7 +37,7 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-         <LinearLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -109,13 +109,14 @@
                 android:layout_weight="0.2"
                 android:text="v"
                 android:onClick="Verify"
-                android:visibility="invisible" />
+                android:visibility="visible" />
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5" />
+
 
         <EditText
             android:id="@+id/eTemail"
@@ -140,7 +141,7 @@
             android:ems="10"
             android:hint="code"
             android:inputType="number|text"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <CheckBox
             android:id="@+id/cBstayconnect"
@@ -160,16 +161,14 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
+
+
 
             <Space
                 android:layout_width="0dp"

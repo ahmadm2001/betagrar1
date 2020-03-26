@@ -1,16 +1,19 @@
 package com.example.betagrar;
 
 public class customer {
-    private String FullName, NumberCar, CarType,Pic,Phone,uid;
+    private String FullName, NumberCar,TypeCar,Pic,Phone,uid;
 
-    public customer(String Fullname, String phone, String uid){}
-    public customer (String FullName, String NumberCar, String CarType, String Phone) {
+    public customer(String name, String s, String email, String Fullname, String phone, String uid){}
+    public customer(String s1, String name1, String s, String name) {
         this.FullName=FullName;
         this.NumberCar=NumberCar;
-        this.CarType=CarType;
+        this.TypeCar=TypeCar;
         this.Phone=Phone;
         this.uid=uid;
     }
+
+
+
     public String getName() {
         return FullName;
     }
@@ -18,7 +21,10 @@ public class customer {
     public void setName(String name) {
         this.FullName=FullName;
     }
-    public void setPhone(String phone) {
+    public String getPhone() {
+        return Phone;
+    }
+     public void setPhone(String phone) {
         this.Phone=phone;
     }
     public String getUid() {
@@ -33,13 +39,13 @@ public class customer {
     }
 
     public void setNumberCar(String numberCar) {
-        CarType = numberCar;
+        TypeCar = numberCar;
     }
     public String getCarType(){
-        return CarType;
+        return TypeCar;
     }
 
-    public void setCarType(String numberCar) {
-        CarType = CarType;
+    public void setTypeCar(String TypeCar) {
+        TypeCar = TypeCar;
     }
 }
