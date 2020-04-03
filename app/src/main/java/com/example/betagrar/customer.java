@@ -1,51 +1,73 @@
 package com.example.betagrar;
 
 public class customer {
-    private String FullName, NumberCar,TypeCar,Pic,Phone,uid;
-
-    public customer(String name, String s, String email, String Fullname, String phone, String uid){}
-    public customer(String s1, String name1, String s, String name) {
-        this.FullName=FullName;
-        this.NumberCar=NumberCar;
-        this.TypeCar=TypeCar;
+    private String name, Phone, TypeCar,numbercar, uid,Pic;
+    private boolean isCustomer;
+    public customer(){}
+    public customer(String Name, String Phone, String Numbercar, String typeCar, String uid ,Boolean isCustomer){
+        this.name=Name;
+        this.TypeCar=typeCar;
+        this.numbercar=Numbercar;
         this.Phone=Phone;
+        //this.Pic=Pic;
         this.uid=uid;
+        this.isCustomer=isCustomer;
     }
 
 
 
     public String getName() {
-        return FullName;
+        return name;
     }
 
     public void setName(String name) {
-        this.FullName=FullName;
+        this.name = name;
     }
+
+    public String getNumbercar() {
+        return numbercar;
+    }
+
+    public void setNumbercar(String numbercar) {
+        this.numbercar = numbercar;
+    }
+
     public String getPhone() {
         return Phone;
     }
-     public void setPhone(String phone) {
-        this.Phone=phone;
+
+    public void setPhone(String phone) {
+        Phone = phone;
     }
+
+    public String getPic() {
+        return Pic;
+    }
+
+    public void setPic(String pic) {
+        Pic = pic;
+    }
+
+    public String getTypeCar() {
+        return TypeCar;
+    }
+
+    public void setTypeCar(String typeCar) {
+        TypeCar = typeCar;
+    }
+
     public String getUid() {
         return uid;
     }
 
     public void setUid(String uid) {
-        this.uid=uid;
-    }
-    public String getnumbercar(){
-        return NumberCar;
+        this.uid = uid;
     }
 
-    public void setNumberCar(String numberCar) {
-        TypeCar = numberCar;
+    public boolean getisCustomer() {
+        return isCustomer;
     }
-    public String getCarType(){
-        return TypeCar;
-    }
-
-    public void setTypeCar(String TypeCar) {
-        TypeCar = TypeCar;
+    public void setCustomer(){
+        this.isCustomer=isCustomer;
     }
 }

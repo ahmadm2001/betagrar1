@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import static com.example.betagrar.FBref.FBDB;
-import static com.example.betagrar.FBref.refUsers;
+import static com.example.betagrar.FBref.refcustomer;
 
 
 public class CustomerActivite extends AppCompatActivity implements AdapterView.OnClickListener {
@@ -44,7 +44,7 @@ public class CustomerActivite extends AppCompatActivity implements AdapterView.O
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refUsers.addValueEventListener(stuListener);
+                refcustomer.addValueEventListener(stuListener);
                 t=new Intent(CustomerActivite.this,OrdersActivite.class);
 
                 startActivity(t);

@@ -1,5 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">betagrar</string>
+    <string-array name="numbers">
+        <item>small</item>
+        <item>medium</item>
+        <item>big</item>
 
-    <string name="app_name" />
+    </string-array>
 </resources>

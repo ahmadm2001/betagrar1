@@ -9,9 +9,14 @@ import com.google.firebase.storage.StorageReference;
 public class FBref {
     public static FirebaseAuth refAuth=FirebaseAuth.getInstance();
     public static FirebaseDatabase FBDB = FirebaseDatabase.getInstance();
-    public static DatabaseReference refUsers=FBDB.getReference("Users");
+    public static DatabaseReference refcustomer=FBDB.getReference("customers");
+    public static DatabaseReference refmanager=FBDB.getReference("managers");
     public static DatabaseReference refoffergrar=FBDB.getReference("offergrar");
     public static FirebaseStorage FBST = FirebaseStorage.getInstance();
     public static StorageReference refStor=FBST.getReference();
     public static StorageReference refImages=refStor.child("Images");
+
 }
+
+
+

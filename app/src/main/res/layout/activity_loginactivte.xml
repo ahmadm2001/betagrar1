@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     tools:context=".Loginactivte">
+
     <Space
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -27,7 +27,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:id="@+id/tVtitle"
             android:text="Login"
             android:autoSizeTextType="uniform"
             android:textStyle="bold" />
@@ -55,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:onClick="visible1"
                 android:visibility="invisible" />
 
             <TextView
@@ -110,6 +110,9 @@
                 android:text="v"
                 android:onClick="Verify"
                 android:visibility="visible" />
+
+
+
         </LinearLayout>
 
         <Space
@@ -118,23 +121,10 @@
             android:layout_weight="0.5" />
 
 
-        <EditText
-            android:id="@+id/eTemail"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="e-mail"
-            android:inputType="textEmailAddress"
-            android:visibility="invisible" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5" />
 
         <EditText
-            android:id="@+id/eTcode"
+            android:id="@+id/code"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -142,25 +132,55 @@
             android:hint="code"
             android:inputType="number|text"
             android:visibility="visible" />
-
+        <EditText
+            android:id="@+id/ed1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="ener number car"
+            android:inputType="number|text"
+            android:visibility="invisible" />
         <CheckBox
             android:id="@+id/cBstayconnect"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="Stay Connected" />
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/nd"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="enter number Drivinig"
+            android:inputType="number"
+            android:visibility="invisible" />
+
+
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
+
+
         <TextView
             android:id="@+id/tVregister"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
 
+            android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -181,12 +201,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:onClick="logorreg"
-                android:text="Login" />
+                android:text="register"
+                tools:ignore="OnClick" />
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
+
 
         </LinearLayout>
 

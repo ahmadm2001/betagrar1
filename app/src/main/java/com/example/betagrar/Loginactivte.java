@@ -1,6 +1,5 @@
 package com.example.betagrar;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,9 +14,12 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,30 +35,36 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
-
 import static com.example.betagrar.FBref.refAuth;
-import static com.example.betagrar.FBref.refUsers;
+import static com.example.betagrar.FBref.refcustomer;
+import static com.example.betagrar.FBref.refmanager;
 
-public class Loginactivte extends AppCompatActivity {
+public class Loginactivte extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "Phone";
 
     TextView tVtitle, tVregister, tVcustomer, tVmanager;
-    EditText eTname, eTphone, eTemail, eTcode;
+    EditText eTname, eTphone, eTcode, eTnc, eTnd;
     CheckBox cBstayconnect;
     Button btn, btnVerify;
-    customer cu;
     Switch Switch;
-
+    boolean isCustomer;
     private String mVerificationId;
-    String name, phone, email, uid,CN;
-    User userdb;
-    Boolean stayConnect, registered, firstrun, Customer;
-    Boolean mVerificationInProgress = false;
-
+    String name, phone, numbercar,  numberDrivinig, TypeCar, text, uid = "";;
+    Boolean stayConnect, registered, firstrun, Customer=false;
+    Boolean mVerificationInProgress = false ,isUID = false;
+    Spinner spinner;
     PhoneAuthCredential c;
+    ValueEventListener usersListener;
+
+    customer customer,currentCustomer;
+    Manager manager;
+    FirebaseUser user;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     FirebaseAuth mAuth;
 
@@ -72,9 +80,10 @@ public class Loginactivte extends AppCompatActivity {
 
         tVtitle = findViewById(R.id.tVtitle);
         eTname = findViewById(R.id.eTname);
-        eTemail = findViewById(R.id.eTemail);
+        eTnd = findViewById(R.id.nd);
+        eTnc=findViewById(R.id.ed1);
         eTphone = findViewById(R.id.eTphone);
-        eTcode = findViewById(R.id.eTcode);
+        eTcode = findViewById(R.id.code);
         cBstayconnect = findViewById(R.id.cBstayconnect);
         tVregister = findViewById(R.id.tVregister);
         tVcustomer = findViewById(R.id.textView2);
@@ -82,6 +91,11 @@ public class Loginactivte extends AppCompatActivity {
         tVmanager = findViewById(R.id.textView3);
         btn = findViewById(R.id.btn);
         btnVerify = findViewById(R.id.button2);
+        spinner = findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.numbers, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener( this);
         stayConnect = false;
         registered = true;
 
@@ -91,7 +105,6 @@ public class Loginactivte extends AppCompatActivity {
         if (firstrun) {
             tVtitle.setText("Register");
             eTname.setVisibility(View.VISIBLE);
-            eTemail.setVisibility(View.VISIBLE);
             tVcustomer.setVisibility(View.VISIBLE);
             Switch.setVisibility(View.VISIBLE);
             tVmanager.setVisibility(View.VISIBLE);
@@ -135,6 +148,7 @@ public class Loginactivte extends AppCompatActivity {
         };
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -155,25 +169,67 @@ public class Loginactivte extends AppCompatActivity {
 
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        mAuth.signInWithCredential(credential)
+        refAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
+                            Toast.makeText(Loginactivte.this, "Successful login", Toast.LENGTH_SHORT).show();
+                            SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putBoolean("stayConnect", cBstayconnect.isChecked());
+                            editor.putBoolean("firstRun", false);
+                            editor.commit();
 
-                            FirebaseUser user = task.getResult().getUser();
-
-                        } else {
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                eTcode.setError("Invalid code.");
+                            FirebaseUser user = refAuth.getCurrentUser();
+                            uid = user.getUid();
+                            if (!isUID) {
+                                if (Customer)
+                                    refcustomer.child("customer").child(name).child("uid").setValue(uid);
+                                else
+                                    refmanager.child("Managers").child(name).child("uid").setValue(uid);
                             }
 
+                            setUsersListener();
+
+                        }
+
+                        else {
+                            Log.d(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(Loginactivte.this, "wrong!", Toast.LENGTH_LONG).show();
                         }
                     }
+
+
+                    public void setUsersListener() {
+                        user = refAuth.getCurrentUser();
+                        usersListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                    if (user.getUid().equals(data.getValue(customer.class).getUid())){
+                                        currentCustomer=data.getValue(customer.class);
+                                        if (currentCustomer.getisCustomer()){
+                                            Intent si = new Intent(Loginactivte.this, CustomerActivite.class);
+                                            startActivity(si);
+                                        }
+                                        else {
+                                            Intent si = new Intent(Loginactivte.this, ManagerActivite.class);
+                                            startActivity(si);
+                                        }
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        };
+                        refmanager.child("Managers").addValueEventListener(usersListener);
+                        refcustomer.child("customer").addValueEventListener(usersListener);
+                    }
                 });
-    }
+    };
 
     private void startPhoneNumberVerification(String phoneNumber) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -201,10 +257,11 @@ public class Loginactivte extends AppCompatActivity {
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                tVtitle.setText("Register");
+             //   tVtitle.setText("Register");
                 eTname.setVisibility(View.VISIBLE);
-                eTemail.setVisibility(View.VISIBLE);
                 tVcustomer.setVisibility(View.VISIBLE);
+                eTnd.setVisibility(View.VISIBLE);
+                eTnc.setVisibility(View.VISIBLE);
                 Switch.setVisibility(View.VISIBLE);
                 eTcode.setVisibility(View.VISIBLE);
                 btnVerify.setVisibility(View.VISIBLE);
@@ -270,10 +327,34 @@ public class Loginactivte extends AppCompatActivity {
                         }
                     });
         } else {
-            name = eTname.getText().toString();
-            email = eTemail.getText().toString();
-            phone = eTphone.getText().toString();
-            final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
+            if (Switch.isChecked()){
+                Customer=true;
+            }
+            if (Customer)
+                name = eTname.getText().toString();
+                startPhoneNumberVerification(phone);
+                numbercar = eTnc.getText().toString();
+                phone = eTphone.getText().toString();
+                isCustomer=true;
+                final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
+        }
+
+            if (Customer==false){
+
+                name = eTname.getText().toString();
+                numbercar = eTnc.getText().toString();
+                phone = eTphone.getText().toString();
+                isCustomer=false;
+                startPhoneNumberVerification(phone);
+                numberDrivinig = eTnd.getText().toString();
+                if (name.isEmpty()) eTname.setError("you must enter a name");
+                if (phone.isEmpty()) eTphone.setError("you must enter a phone number");
+                if (numbercar.isEmpty())eTnc.setError("you must enter a numbercar");
+                if(numberDrivinig.isEmpty())eTnd.setError("you must enter a numberDrivinig");
+                final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
+
+            }
+
             startPhoneNumberVerification(phone);
             String code = eTcode.getText().toString();
             if (TextUtils.isEmpty(code)) {
@@ -285,7 +366,7 @@ public class Loginactivte extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        pd.dismiss();
+                  //      pd.dismiss();
                         SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putBoolean("stayConnect", cBstayconnect.isChecked());
@@ -294,24 +375,19 @@ public class Loginactivte extends AppCompatActivity {
                         Log.d("MainActivity", "createUserWithEmail:success");
                         FirebaseUser user = refAuth.getCurrentUser();
                         uid = user.getUid();
-                        if (Switch.isChecked()) {
-                            Customer = true;
-                        }
-                        else
-                            Customer = false;
-                            userdb = new User(name, email, phone, uid);
-
                         if (Customer) {
-                            refUsers.child("customer").child(phone).setValue(userdb);
+                            customer=new customer (name, phone, TypeCar,numbercar, uid,isCustomer);
+                            refcustomer.child("customer").child(phone).setValue(customer);
                             Toast.makeText(Loginactivte.this, "Successful registration", Toast.LENGTH_LONG).show();
                             Intent si = new Intent(Loginactivte.this, CustomerActivite.class);
                             startActivity(si);
                         }
 
                         else {
-                            refUsers.child("Managers").child(phone).setValue(userdb);
+                            manager=new Manager(name, phone,numbercar ,numberDrivinig,uid);
+                            refmanager.child("Managers").child(phone).setValue(manager);
                             Toast.makeText(Loginactivte.this, "Successful registration", Toast.LENGTH_LONG).show();
-                            Intent si = new Intent(Loginactivte.this, ManagerActivite.class);
+                            Intent si = new Intent(Loginactivte.this, CustomerActivite.class);
                             startActivity(si);
                         }
 
@@ -328,6 +404,33 @@ public class Loginactivte extends AppCompatActivity {
                 }
             });
         }
+
+
+    public void visible1(View view) {
+        if (Switch.isChecked()){
+            Customer=true;
+        }
+        if (Customer) {
+            spinner.setVisibility(View.VISIBLE);
+            eTnd.setVisibility(View.INVISIBLE);
+            Toast.makeText(Loginactivte.this, "hello customer ", Toast.LENGTH_LONG).show();
+
+        }
+        if(Customer==false){
+            spinner.setVisibility(View.INVISIBLE);
+            eTnd.setVisibility(View.VISIBLE);
+            Toast.makeText(Loginactivte.this, "hello manager ", Toast.LENGTH_LONG).show();
+
+        }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        TypeCar = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
